@@ -37,5 +37,7 @@ contract Crowdfunding {
         return numberOfCampaigns - 1;
          
     }
+
+    function donateToCampaign(){}
      
 }
