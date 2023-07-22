@@ -16,7 +16,7 @@ contract Crowdfunding {
 
     mapping(uint256 => Campaign) public campaigns;
 
-    uint256 pblic numberOfCampaigns = 0;
+    uint256 public numberOfCampaigns = 0;
 
     function createCampaign(address _owner, string memory _title, string memory _desciption, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256)
     {
@@ -38,6 +38,17 @@ contract Crowdfunding {
          
     }
 
-    function donateToCampaign(){}
+    function donateToCampaign(uint256 _id){
+        uint256 amount = msg.value;
+
+        Campaign storage campaign = campaigns[_id];
+        campaign.donators.push(msg.sender);
+        campaign.donations.push(amount);
+
+        (bool sent,) =  payable(campaign.owner).call{value: amount}("");
+        if(sent){
+            campaign.amountCollected = campaign.amountCollected +amount;
+        }
+    }
      
 }
