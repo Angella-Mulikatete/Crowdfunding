@@ -20,7 +20,7 @@ contract Crowdfunding {
 
     function createCampaign(address _owner, string memory _title, string memory _desciption, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256)
     {
-        Camapaign storage campaign = campaigns[numberOfCampaigns];
+        Campaign storage campaign = campaigns[numberOfCampaigns];
         
         //check if the deadline is less than the current time, throw an error
         require(campaign.deadline < block.timestamp, "The deadline should be a date in the future");
@@ -38,7 +38,7 @@ contract Crowdfunding {
          
     }
 
-    function donateToCampaign(uint256 _id){
+    function donateToCampaign(uint256 _id) public {
         uint256 amount = msg.value;
 
         Campaign storage campaign = campaigns[_id];
@@ -56,7 +56,16 @@ contract Crowdfunding {
         return (campaigns[_id].donators, campaigns[_id].donations);
     }
 
-    
+    function getCampaigns() public view returns (Campaign[]memory){
+        Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
+        
+        for(uint i =0; i< numberOfCampaigns; i++){
+            Campaign storage item = campaigns[i];
+
+            allCampaigns[i] = item;
+        }
+        return allCampaigns;
+    }
 
 
      
